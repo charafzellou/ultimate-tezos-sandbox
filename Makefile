@@ -1,6 +1,6 @@
 BCD_TAG=4.7.0
-LIGO_VER=ligolang/ligo:0.72.0
-LIGO=docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" $(LIGO_VER)
+LIGO_VER=0.72.0
+LIGO=docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:$(LIGO_VER)
 PROTOCOL_OPT=--protocol nairobibox
 JSON_OPT=--michelson-format json
 
@@ -24,7 +24,6 @@ init-ligo: yarn-install sandbox-pull sandbox-start
 	@rm -rf archetype-template
 	@mv ligo-template/* ./
 	@rm -rf ligo-template
-	@docker pull $(LIGO_VER)
 	
 ##########################################
 
