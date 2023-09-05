@@ -1,0 +1,106 @@
+{ storage
+    (pair (string %name)
+          (nat %birthYear)
+          (bool %hasNose)
+          (timestamp %birthDate)
+          (int %timeAlive)
+          (bytes %nameInBytes)
+          (mutez %actualBalance)
+          (address %tzAddress)
+          (int %gender)
+          (pair %tuple nat string)
+          (pair %complexTuple nat (pair string string))
+          (pair %p (string %first) (string %last) (timestamp %birth))) ;
+  parameter
+    (or (or (or (or (string %changeName) (nat %changeBirthYear))
+                (or (bool %changeHasNose) (timestamp %changebirthdate)))
+            (or (or (int %changeGender) (unit %updateTimeAlive))
+                (or (bytes %changeNameInBytes) (mutez %changeActualBalance))))
+        (address %changeTzAddress)) ;
+  code { UNPAIR ;
+         DIP 1 { UNPAIR 12 } ;
+         IF_LEFT
+           { IF_LEFT
+               { IF_LEFT
+                   { IF_LEFT
+                       { DUP ;
+                         DIP 1 { SWAP ; DROP 1 } ;
+                         SWAP ;
+                         DROP 1 ;
+                         PAIR 12 ;
+                         NIL operation ;
+                         PAIR }
+                       { DUP ;
+                         DIP 1 { DIG 2 ; DROP 1 } ;
+                         DUG 2 ;
+                         DROP 1 ;
+                         PAIR 12 ;
+                         NIL operation ;
+                         PAIR } }
+                   { IF_LEFT
+                       { DUP ;
+                         DIP 1 { DIG 3 ; DROP 1 } ;
+                         DUG 3 ;
+                         DROP 1 ;
+                         PAIR 12 ;
+                         NIL operation ;
+                         PAIR }
+                       { DUP ;
+                         DIP 1 { DIG 4 ; DROP 1 } ;
+                         DUG 4 ;
+                         DROP 1 ;
+                         PAIR 12 ;
+                         NIL operation ;
+                         PAIR } } }
+               { IF_LEFT
+                   { IF_LEFT
+                       { DUP ;
+                         DIP 1 { DIG 9 ; DROP 1 } ;
+                         DUG 9 ;
+                         DROP 1 ;
+                         PAIR 12 ;
+                         NIL operation ;
+                         PAIR }
+                       { DROP 1 ;
+                         DUP 4 ;
+                         NOW ;
+                         SUB ;
+                         DIP 1 { DIG 4 ; DROP 1 } ;
+                         DUG 4 ;
+                         PAIR 12 ;
+                         NIL operation ;
+                         PAIR } }
+                   { IF_LEFT
+                       { DUP ;
+                         DIP 1 { DIG 6 ; DROP 1 } ;
+                         DUG 6 ;
+                         DROP 1 ;
+                         PAIR 12 ;
+                         NIL operation ;
+                         PAIR }
+                       { DUP ;
+                         DIP 1 { DIG 7 ; DROP 1 } ;
+                         DUG 7 ;
+                         DROP 1 ;
+                         PAIR 12 ;
+                         NIL operation ;
+                         PAIR } } } }
+           { DUP ;
+             DIP 1 { DIG 8 ; DROP 1 } ;
+             DUG 8 ;
+             DROP 1 ;
+             PAIR 12 ;
+             NIL operation ;
+             PAIR } } ;
+  view "getFullName"
+       unit
+       string
+       { CDR ;
+         UNPAIR ;
+         SWAP ;
+         DROP 1 ;
+         UNIT ;
+         DUP 2 ;
+         SWAP ;
+         DROP 1 ;
+         DIP 1 { DROP 1 } } }

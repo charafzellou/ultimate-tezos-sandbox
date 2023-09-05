@@ -1,0 +1,31 @@
+{
+  "name": "tezos-archetype-template",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "compile" : "completium-cli generate michelson contracts/helloworld.arl > compiled/helloworld.tz",
+    "gen-binding": "completium-cli generate binding-ts _ --input-path ./contracts/ --output-path ./tests/binding/",
+    "test": "ts-mocha --timeout 0 --slow 99999999999999999 ./tests/*.test.ts",
+    "deploy" : "completium-cli deploy contracts/helloworld.arl"
+  },
+  "author": "Charaf ZELLOU <charaf.zellou@gmail.com>",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-prettier": "^5.0.0",
+    "@completium/archetype-ts-types": "^0.1.8",
+    "@completium/completium-cli": "^0.4.89",
+    "@completium/experiment-ts": "^0.1.13",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.5.9",
+    "eslint": "^8.48.0",
+    "path": "^0.12.7",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
