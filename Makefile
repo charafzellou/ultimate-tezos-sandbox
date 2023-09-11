@@ -1,7 +1,7 @@
 BCD_TAG=4.7.0
 LIGO_VER=0.72.0
 LIGO=docker run --platform linux/amd64 --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:$(LIGO_VER)
-PROTOCOL_OPT=--protocol nairobibox
+PROTOCOL_OPT=--protocol nairobi
 JSON_OPT=--michelson-format json
 
 ##########################################
