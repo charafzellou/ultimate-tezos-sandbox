@@ -1,0 +1,100 @@
+version: "3.6"
+services:
+  flextesa:
+    restart: always
+    image: oxheadalpha/flextesa:20230901
+    platform: linux/amd64
+    command: nairobibox start
+    environment:
+      - block_time=3
+      - flextesa_node_cors_origin=*
+    ports:
+      - 20000:20000
+    expose:
+      - 20000/tcp
+    logging: &bcd-logging
+      options:
+        max-size: 10m
+        max-file: "5"
+
+  db:
+    restart: always
+    image: postgres:15.4-alpine
+    platform: linux/amd64
+    shm_size: 1g
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-changeme}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
+      - POSTGRES_DB=${POSTGRES_DB:-changeme}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - db:/var/lib/postgresql/data
+    logging: *bcd-logging
+
+  pgadmin:
+    restart: always
+    image: dpage/pgadmin4:7.6
+    platform: linux/amd64
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-changeme}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-changeme}
+      - PGADMIN_LISTEN_PORT=80
+    depends_on:
+      - db
+    ports:
+      - ${PGADMIN_PORT}:80
+
+  api:
+    restart: always
+    image: ghcr.io/baking-bad/bcdhub-api:${BCD_TAG-changeme}
+    platform: linux/amd64
+    environment:
+      - BCD_ENV=sandbox
+      - GIN_MODE=debug
+      - POSTGRES_USER=${POSTGRES_USER:-changeme}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
+      - SANDBOX_NODE_URI=${SANDBOX_NODE_URI:-changeme}
+      - SANDBOX_IPFS_GATEWAY=${SANDBOX_IPFS_GATEWAY:-changeme}
+    depends_on:
+      - db
+    ports:
+      - 14000:14000
+    volumes:
+      - bcdshare:/etc/bcd
+    links:
+      - "flextesa:sandbox"
+    logging: *bcd-logging
+
+  indexer:
+    restart: always
+    image: ghcr.io/baking-bad/bcdhub-indexer:${BCD_TAG-changeme}
+    platform: linux/amd64
+    environment:
+      - BCD_ENV=sandbox
+      - POSTGRES_USER=${POSTGRES_USER:-changeme}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
+      - SANDBOX_NODE_URI=${SANDBOX_NODE_URI:-changeme}
+      - SANDBOX_IPFS_GATEWAY=${SANDBOX_IPFS_GATEWAY:-changeme}
+    depends_on:
+      - db
+    links:
+      - "flextesa:sandbox"
+    volumes:
+      - bcdshare:/etc/bcd
+    logging: *bcd-logging
+
+  gui:
+    container_name: sandbox-gui
+    restart: always
+    image: ghcr.io/baking-bad/bcdhub-gui:${BCD_TAG-changeme}
+    platform: linux/amd64
+    depends_on:
+      - api
+    ports:
+      - 8000:80
+    logging: *bcd-logging
+
+volumes:
+  bcdshare:
+  db:
+    driver: local

@@ -1,0 +1,25 @@
+{
+  "name": "tezos-cameligo-template",
+  "private": true,
+  "version": "0.0.1",
+  "description": "",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "deploy": "npx ts-node scripts/main.deploy.ts"
+  },
+  "author": "Charaf ZELLOU <charaf.zellou@gmail.com>",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+		"eslint-plugin-prettier": "^5.0.0",
+    "@taquito/signer": "^17.3.0",
+    "@taquito/taquito": "^17.3.0",
+    "@taquito/utils": "^17.3.0",
+    "dotenv": "^16.3.1",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint": "^8.48.0",
+    "path": "^0.12.7",
+    "ts-node": "^10.9.1"
+  }
+}

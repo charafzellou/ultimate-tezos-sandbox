@@ -1,0 +1,69 @@
+archetype helloworld
+
+variable name : string = "Tom Jedusor"
+variable birthYear : nat = 1926
+variable hasNose : bool = true
+variable birthDate : date = 1926-12-31T23:55:00+01:00
+variable timeAlive : duration = 4903w6d4h34m18s
+variable nameInBytes : bytes = 0x546f6d65204a656475736f72
+variable actualBalance : tez = 0mtz
+variable tzAddress : address = tz1Lc2qBKEWCBeDU8npG6zCeCqpmaegRi6Jg
+
+enum sex  = | Male | Female | Other
+variable gender : sex = Male
+
+variable tuple : nat * string = (0, "Avada")
+variable complexTuple : nat * (string * string) = (0, ("Avada", "Kedavra"))
+
+record person {
+  first : string;
+  last  : string;
+  birth : date;
+}
+variable p : person = {
+  first = "Tom";
+  last  = "Jedusor";
+  birth = 1926-12-31
+}
+
+// variable map = <nat * string>map
+
+entry changeName (param : string) {
+  name := param
+}
+
+entry changeBirthYear (param : nat) {
+  birthYear := param
+}
+
+entry changeHasNose (param : bool) {
+  hasNose := param
+}
+
+entry changebirthdate (param : date) {
+  birthDate := param
+}
+
+entry changeGender (param : sex) {
+  gender := param
+}
+
+entry updateTimeAlive () {
+  timeAlive := (now - birthDate)
+}
+
+entry changeNameInBytes (param : bytes) {
+  nameInBytes := param
+}
+
+entry changeActualBalance (param : tez) {
+  actualBalance := param
+}
+
+entry changeTzAddress (param : address) {
+  tzAddress := param
+}
+
+view getFullName () : string {
+  return name
+}
